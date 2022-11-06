@@ -7314,11 +7314,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Shinespark\\Desktop\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
+      "projectUniqueName": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
       "projectName": "BlackRedTree",
-      "projectPath": "C:\\Users\\Shinespark\\Desktop\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
+      "projectPath": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
       "packagesPath": "C:\\Users\\Shinespark\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Shinespark\\Desktop\\BlackRedTree\\BlackRedTree\\obj\\",
+      "outputPath": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

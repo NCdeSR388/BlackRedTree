@@ -8,7 +8,7 @@ namespace BlackRedTree
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        //coment
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CJL8wbELikVdWt7b3m+9vdmV316eOl6Wh5SWg5OfZGONgiv9TRdzsvxOfuxPeHyZxNRKyNYMxMzsJui0jT55gw==",
+  "dgSpecHash": "6l+lV61gUHDxSN/BCo6nQ16zYAnKlJdSHObrSO31sweQduKJPlYMwf/sIK1ZBHZ3tvoQNpBuFm+26f8bgcRWGQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Shinespark\\Desktop\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
+  "projectFilePath": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Shinespark\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\Shinespark\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\1.1.0\\microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",
