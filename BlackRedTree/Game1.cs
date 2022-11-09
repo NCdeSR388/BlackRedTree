@@ -26,7 +26,13 @@ namespace BlackRedTree
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Arbol arbol = new Arbol();
+            arbol.Insertar();
+            arbol.Insertar();
+            arbol.Insertar();
+            arbol.Insertar();
+            arbol.Insertar();
+            arbol.Insertar();
             // TODO: use this.Content to load your game content here
         }
 
