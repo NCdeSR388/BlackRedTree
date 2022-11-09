@@ -7308,23 +7308,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Shinespark\\.nuget\\packages\\": {},
+    "C:\\Users\\luis3\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
+      "projectUniqueName": "C:\\Users\\luis3\\Source\\Repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
       "projectName": "BlackRedTree",
-      "projectPath": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
-      "packagesPath": "C:\\Users\\Shinespark\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Shinespark\\source\\repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\obj\\",
+      "projectPath": "C:\\Users\\luis3\\Source\\Repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\BlackRedTree.csproj",
+      "packagesPath": "C:\\Users\\luis3\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\luis3\\Source\\Repos\\NCdeSR388\\BlackRedTree\\BlackRedTree\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Shinespark\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\luis3\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7366,8 +7366,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -7379,7 +7378,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
