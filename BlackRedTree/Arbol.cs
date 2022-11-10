@@ -37,6 +37,9 @@ namespace BlackRedTree
             {
                 raiz.insertar(new_nodo);
             }
+            raiz.CalcularFactorEq();
+            raiz.RotacionesPorEquilibrio();
+            posicion_nodo();
         }
 
         public string Inorden(Nodo n)
