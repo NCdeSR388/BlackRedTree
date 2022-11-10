@@ -14,14 +14,21 @@ namespace BlackRedTree
         public Nodo izquierdo;
         public Nodo derecho;
         public int color;
-        public int nivel;
 
         //Variables para caracteristicas graficas del nodo
         public int nodoX, nodoY, diameter;
+        public int nivel;
+        public int FacrorEquilibrio;
 
         public Nodo()
         {
             this.clave = rand.Next(1000);
+            color = 0;
+
+        }
+        public Nodo(int clave)
+        {
+            this.clave = clave;
             color = 0;
 
         }
@@ -114,6 +121,86 @@ namespace BlackRedTree
                 MayorNivel = derecho.altura(altura_actual, MayorNivel);
             }
             return MayorNivel;
+        }
+
+        public void CalcularFactorEq()
+        {
+            FacrorEquilibrio = 0;
+            if(izquierdo != null)
+            {
+                FacrorEquilibrio--;
+                if(izquierdo.izquierdo != null || izquierdo.derecho != null)
+                {
+                    FacrorEquilibrio--;
+                }
+                izquierdo.CalcularFactorEq();
+            }
+            if(derecho != null)
+            {
+                FacrorEquilibrio++;                
+                if(derecho.izquierdo != null || derecho.derecho != null)
+                {
+                    FacrorEquilibrio++;
+                }
+                derecho.CalcularFactorEq();
+            }
+            if(FacrorEquilibrio == 2 || FacrorEquilibrio == -2)
+            {
+                MessageBox.Show(clave.ToString() + ", " + FacrorEquilibrio.ToString());
+            }
+        }
+        
+        public void RotacionesPorEquilibrio()
+        {
+            if (FacrorEquilibrio == -2)
+            {
+                if (izquierdo.izquierdo == null)
+                {
+
+                    Nodo temp1 = new Nodo(clave);
+                    Nodo temp2 = new Nodo(izquierdo.clave);
+                    clave = izquierdo.derecho.clave;
+                    izquierdo = temp2;
+                    derecho = temp1;
+                }
+                else
+                {
+                    Nodo temp1 = new Nodo(clave);
+                    Nodo temp2 = new Nodo(izquierdo.izquierdo.clave);
+                    clave = izquierdo.clave;
+                    izquierdo = temp2;
+                    derecho = temp1;
+                }
+            }
+            if (FacrorEquilibrio == 2)
+            {
+                if (derecho.derecho == null)
+                {
+
+                    Nodo temp1 = new Nodo(clave);
+                    Nodo temp2 = new Nodo(derecho.clave);
+                    clave = derecho.izquierdo.clave;
+                    derecho = temp2;
+                    izquierdo = temp1;
+                }
+                else
+                {
+                    Nodo temp1 = new Nodo(clave);
+                    Nodo temp2 = new Nodo(derecho.derecho.clave);
+                    clave = derecho.clave;
+                    derecho = temp2;
+                    izquierdo = temp1;
+                }
+            }
+            if (izquierdo != null)
+            {
+                izquierdo.RotacionesPorEquilibrio();
+            }
+            if(derecho != null)
+            {
+
+                derecho.RotacionesPorEquilibrio();
+            }
         }
         /*
          no es lo que queria pero devuelve el numero de nodos xd
