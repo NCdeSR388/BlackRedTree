@@ -13,23 +13,31 @@ namespace BlackRedTree
         public int clave;
         public Nodo izquierdo;
         public Nodo derecho;
-        public int color;
+        public Color color;
 
         //Variables para caracteristicas graficas del nodo
         public int nodoX, nodoY, diameter;
         public int nivel;
         public int FacrorEquilibrio;
+        public int alturaNodo;
+        //Variables para ordenamiento del nodo
 
         public Nodo()
         {
             this.clave = rand.Next(1000);
-            color = 0;
+            color = Color.Red;
 
         }
         public Nodo(int clave)
         {
             this.clave = clave;
-            color = 0;
+            color = Color.Red;
+
+        }
+        public Nodo(int clave, Color color)
+        {
+            this.clave = clave;
+            this.color = color;
 
         }
 
@@ -100,7 +108,7 @@ namespace BlackRedTree
             }
             _spriteBatch.Begin();
             Rectangle rect_nodo = new Rectangle(nodoX, nodoY, diameter, diameter);
-            _spriteBatch.Draw(Textures[0], rect_nodo, Color.Gray);
+            _spriteBatch.Draw(Textures[0], rect_nodo, color);
             Vector2 VectorClave = new Vector2(nodoX+(diameter/4), nodoY+(diameter/3)); 
             _spriteBatch.DrawString(Font, clave.ToString(), VectorClave, Color.Black) ;
             _spriteBatch.End();
@@ -108,6 +116,7 @@ namespace BlackRedTree
         public int altura(int altura_actual, int MayorNivel)
         {
             altura_actual++;
+            this.alturaNodo = altura_actual;
             if(MayorNivel < altura_actual)
             {
                 MayorNivel = altura_actual;
@@ -149,58 +158,181 @@ namespace BlackRedTree
                 MessageBox.Show(clave.ToString() + ", " + FacrorEquilibrio.ToString());
             }
         }
-        
-        public void RotacionesPorEquilibrio()
+        public bool RotacionRojoNegro()
         {
-            if (FacrorEquilibrio == -2)
-            {
-                if (izquierdo.izquierdo == null)
-                {
 
-                    Nodo temp1 = new Nodo(clave);
-                    Nodo temp2 = new Nodo(izquierdo.clave);
-                    clave = izquierdo.derecho.clave;
-                    izquierdo = temp2;
-                    derecho = temp1;
-                }
-                else
-                {
-                    Nodo temp1 = new Nodo(clave);
-                    Nodo temp2 = new Nodo(izquierdo.izquierdo.clave);
-                    clave = izquierdo.clave;
-                    izquierdo = temp2;
-                    derecho = temp1;
-                }
-            }
-            if (FacrorEquilibrio == 2)
+            if(izquierdo != null)
             {
-                if (derecho.derecho == null)
+                if(izquierdo.color == Color.Red)
                 {
+                    //Verificamos un posible Caso 1
+                    bool dv = false;
+                    if (derecho != null)
+                    {
+                        if (derecho.color == Color.Red)
+                        {
+                            dv = true;
+                            if (izquierdo.izquierdo != null)
+                            {
+                                if (izquierdo.izquierdo.color == Color.Red)
+                                {
+                                    //Caso1 Izquierda-Izquierda
+                                    color = Color.Red;
+                                    izquierdo.color = Color.Gray;
+                                    derecho.color = Color.Gray;
+                                    return true;
+                                }
+                            }
+                            if (izquierdo.derecho != null)
+                            {
+                                if (izquierdo.derecho.color == Color.Red)
+                                {
+                                    //Caso1 Izquierda-Derecha
+                                    color = Color.Red;
+                                    izquierdo.color = Color.Gray;
+                                    derecho.color = Color.Gray;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    if(dv != true)
+                    {
+                    //Verificamos un posible caso 2
 
-                    Nodo temp1 = new Nodo(clave);
-                    Nodo temp2 = new Nodo(derecho.clave);
-                    clave = derecho.izquierdo.clave;
-                    derecho = temp2;
-                    izquierdo = temp1;
-                }
-                else
-                {
-                    Nodo temp1 = new Nodo(clave);
-                    Nodo temp2 = new Nodo(derecho.derecho.clave);
-                    clave = derecho.clave;
-                    derecho = temp2;
-                    izquierdo = temp1;
+                        if (izquierdo.derecho != null)
+                        {
+                            if (izquierdo.derecho.color == Color.Red)
+                            {
+                                MessageBox.Show("Caso 2");
+                                //Caso2 Izquierda(Se convierte a un caso 3 de izquierda)
+                                Nodo temp = izquierdo.derecho.izquierdo;
+                                izquierdo.derecho.izquierdo = izquierdo;
+                                izquierdo = izquierdo.derecho;
+                                izquierdo.izquierdo.derecho = temp;
+                                return true;
+                            }
+                        }
+                    //Verificamos un posible caso 3
+                        
+                        if(izquierdo.izquierdo != null)
+                        {
+                            if(izquierdo.izquierdo.color == Color.Red)
+                            {
+                                MessageBox.Show("Caso 3");
+                                Nodo temp = new Nodo(clave, Color.Red);
+                                temp.izquierdo = izquierdo.derecho;
+                                temp.derecho = derecho;
+                                clave = izquierdo.clave;
+                                color = Color.Gray;
+                                izquierdo = izquierdo.izquierdo;
+                                derecho = temp;
+                                return true;
+                            }
+                        }
+                    }
+
+
                 }
             }
-            if (izquierdo != null)
+            if (derecho != null)
             {
-                izquierdo.RotacionesPorEquilibrio();
+                if (derecho.color == Color.Red)
+                {
+                    //Verificamos un posible Caso 1
+                    bool dv = false;
+                    if (izquierdo != null)
+                    {
+                        if (izquierdo.color == Color.Red)
+                        {
+                            dv = true;
+                            if (derecho.derecho != null)
+                            {
+                                if (derecho.derecho.color == Color.Red)
+                                {
+                                    //Caso1 Izquierda-Izquierda
+                                    color = Color.Red;
+                                    derecho.color = Color.Gray;
+                                    izquierdo.color = Color.Gray;
+                                    return true;
+                                }
+                            }
+                            if (derecho.izquierdo != null)
+                            {
+                                if (derecho.izquierdo.color == Color.Red)
+                                {
+                                    //Caso1 Izquierda-Derecha
+                                    color = Color.Red;
+                                    derecho.color = Color.Gray;
+                                    izquierdo.color = Color.Gray;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    if (dv != true)
+                    {
+                        //Verificamos un posible caso 2
+
+                        if (derecho.izquierdo != null)
+                        {
+                            if (derecho.izquierdo.color == Color.Red)
+                            {
+                                MessageBox.Show("Caso 2");
+                                //Caso2 Izquierda(Se convierte a un caso 3 de izquierda)
+                                Nodo temp = derecho.izquierdo.derecho;
+                                derecho.izquierdo.derecho = derecho;
+                                derecho = derecho.izquierdo;
+                                derecho.derecho.izquierdo = temp;
+                                return true;
+                            }
+                        }
+                        //Verificamos un posible caso 3
+
+                        if (derecho.derecho != null)
+                        {
+                            if (derecho.derecho.color == Color.Red)
+                            {
+                                MessageBox.Show("Caso 3");
+                                Nodo temp = new Nodo(clave, Color.Red);
+                                temp.derecho = derecho.izquierdo;
+                                temp.izquierdo = izquierdo;
+                                clave = derecho.clave;
+                                color = Color.Gray;
+                                derecho = derecho.derecho;
+                                izquierdo = temp;
+                                return true;
+                            }
+                        }
+                    }
+
+
+                }
             }
+
+
+
+            //Caso3 Izquierda
+
+            //Caso por default
+            if (alturaNodo == 1)
+            {
+                color = Color.Gray;
+            }
+            //Practicamos recursividad y retornamos resultados
+            bool d = false;
             if(derecho != null)
             {
-
-                derecho.RotacionesPorEquilibrio();
+                d = derecho.RotacionRojoNegro();
             }
+            if(izquierdo != null)
+            {
+                if(izquierdo.RotacionRojoNegro() == true || d == true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         /*
          no es lo que queria pero devuelve el numero de nodos xd
