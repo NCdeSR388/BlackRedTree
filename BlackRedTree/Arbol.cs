@@ -37,9 +37,12 @@ namespace BlackRedTree
             {
                 raiz.insertar(new_nodo);
             }
-            raiz.CalcularFactorEq();
-            raiz.RotacionesPorEquilibrio();
             posicion_nodo();
+            bool temp = true;
+            while (temp)
+            {
+                temp = raiz.RotacionRojoNegro();
+            }
         }
 
         public string Inorden(Nodo n)
@@ -76,7 +79,7 @@ namespace BlackRedTree
         }
         private void posicion_nodo()
         {
-            alturaArbol =raiz.altura(0,0);
+            alturaArbol =raiz.altura(0,0) * 2;
             raiz.nodoX = X_raiz;
             raiz.nodoY = Y_raiz;
             raiz.diameter = diameter;
@@ -111,7 +114,7 @@ namespace BlackRedTree
             }
             _spriteBatch.Begin();
             Rectangle rect_nodo = new Rectangle(X_raiz, Y_raiz, diameter, diameter);
-            _spriteBatch.Draw(Textures[0], rect_nodo, Color.Gray);
+            _spriteBatch.Draw(Textures[0], rect_nodo, raiz.color);
             Vector2 VectorClave = new Vector2(X_raiz + (diameter / 4), Y_raiz + (diameter / 3));
             _spriteBatch.DrawString(Font, raiz.clave.ToString(), VectorClave, Color.Black);
             _spriteBatch.End();
