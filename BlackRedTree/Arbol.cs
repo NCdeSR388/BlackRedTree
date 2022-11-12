@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace BlackRedTree
 {
@@ -13,11 +11,12 @@ namespace BlackRedTree
         public string preorden = "Preorden: ";
         public string posorden = "Posorden: ";
         //parametros graficos para posiciones de nodo
-        int distanceX = 20;
-        int distanceY = 55;
+        int distanceX = 40;
+        int distanceY = 70;
         int diameter = 50;
         int X_raiz = 600, Y_raiz = 20;
         int alturaArbol;
+        double compensacion = 1.8;
 
         public Arbol()
         {
@@ -37,6 +36,7 @@ namespace BlackRedTree
             {
                 raiz.insertar(new_nodo);
             }
+            alturaArbol = raiz.altura(0, 0);
             posicion_nodo();
             bool temp = true;
             while (temp)
@@ -58,7 +58,7 @@ namespace BlackRedTree
 
         public string Preorden(Nodo n)
         {
-            if(n != null)
+            if (n != null)
             {
                 preorden += n.clave + ", ";
                 Preorden(n.izquierdo);
@@ -79,38 +79,37 @@ namespace BlackRedTree
         }
         private void posicion_nodo()
         {
-            alturaArbol =raiz.altura(0,0) * 2;
             raiz.nodoX = X_raiz;
             raiz.nodoY = Y_raiz;
             raiz.diameter = diameter;
             if (raiz.izquierdo != null)
             {
-                raiz.izquierdo.XY_position(X_raiz - distanceX - (alturaArbol*diameter)/2, Y_raiz + distanceY, distanceY, distanceX, diameter, alturaArbol/2);
+                raiz.izquierdo.XY_position(Convert.ToInt32(X_raiz - (distanceX * raiz.izquierdo.AlturaDerecha())*compensacion), Y_raiz + distanceY, distanceY, distanceX, diameter);
             }
             if (raiz.derecho != null)
             {
-                raiz.derecho.XY_position(X_raiz + distanceX + (alturaArbol * diameter)/2, Y_raiz + distanceY, distanceY, distanceX, diameter, alturaArbol/2);
+                raiz.derecho.XY_position(Convert.ToInt32(X_raiz + (distanceX * raiz.derecho.AlturaIzquierda())*compensacion), Y_raiz + distanceY, distanceY, distanceX, diameter);
             }
         }
         public void dibujar_arbol(GameTime gameTime, Texture2D[] Textures, SpriteBatch _spriteBatch, SpriteFont Font)
         {
-            
+
             posicion_nodo();
             if (raiz.izquierdo != null)
             {
                 _spriteBatch.Begin();
-                Rectangle rectLine = new Rectangle(X_raiz - (diameter / 2)- (alturaArbol * diameter) / 3, Y_raiz + (diameter / 2), distanceX + (alturaArbol * diameter) / 2, distanceY);
+                Rectangle rectLine = new Rectangle(X_raiz + (diameter / 2) - Convert.ToInt32(distanceX * raiz.izquierdo.AlturaDerecha() * compensacion), Y_raiz + (diameter / 2), Convert.ToInt32(distanceX * raiz.izquierdo.AlturaDerecha() * compensacion), distanceY);
                 _spriteBatch.Draw(Textures[1], rectLine, Color.Gray);
                 _spriteBatch.End();
-                raiz.izquierdo.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY,alturaArbol/2);
+                raiz.izquierdo.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY);
             }
             if (raiz.derecho != null)
             {
                 _spriteBatch.Begin();
-                Rectangle rectLine = new Rectangle(X_raiz + (diameter/2), Y_raiz + (diameter / 2), distanceX + (alturaArbol * diameter) / 2, distanceY);
+                Rectangle rectLine = new Rectangle(X_raiz + (diameter / 2), Y_raiz + (diameter / 2), Convert.ToInt32(distanceX * raiz.derecho.AlturaIzquierda() * compensacion), distanceY);
                 _spriteBatch.Draw(Textures[2], rectLine, Color.Gray);
                 _spriteBatch.End();
-                raiz.derecho.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY,alturaArbol/2);
+                raiz.derecho.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY);
             }
             _spriteBatch.Begin();
             Rectangle rect_nodo = new Rectangle(X_raiz, Y_raiz, diameter, diameter);
