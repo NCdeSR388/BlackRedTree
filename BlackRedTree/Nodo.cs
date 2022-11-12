@@ -72,6 +72,39 @@ namespace BlackRedTree
                 return false;
             }
         }
+        //METODO BUSCAR TIPO STRING PARA RETORNAR EL RESULTADO EN UN SPRITEFONT
+        public string buscar(int clave, Nodo n)
+        {
+            if (n != null)
+            {
+                if (clave == n.clave)
+                {
+                    //ESTO RETORNARA LAS COORDENADAS DEL NODO
+                    return null;
+                }
+                else
+                {
+                    if (clave < n.clave)
+                    {
+                        buscar(clave, n.izquierdo);
+                    }
+                    else
+                    {
+                        if (clave > n.clave)
+                        {
+                            buscar(clave, n.derecho);
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                return "Error de busqueda: El nodo que busca no se encuentra en el arbol";
+            }
+
+            return null;
+        }
         public int AlturaIzquierda()
         {
             int contador = 1;

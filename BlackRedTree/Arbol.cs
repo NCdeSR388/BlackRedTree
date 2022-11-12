@@ -44,7 +44,21 @@ namespace BlackRedTree
                 temp = raiz.RotacionRojoNegro();
             }
         }
+        //METODO BUSCAR TIPO STRING PARA RETORNAR EL RESULTADO EN UN SPRITEFONT
+        public string Buscar(int clave)
+        {
+            if (raiz != null)
+            {
+                raiz.buscar(clave, raiz);
+            }
 
+            else
+            {
+                return "Error de busqueda: No se ha creado un arbol rojo/negro";
+            }
+
+            return null;
+        }
         public string Inorden(Nodo n)
         {
             if (n != null)
