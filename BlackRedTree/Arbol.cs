@@ -6,6 +6,7 @@ namespace BlackRedTree
 {
     public class Arbol
     {
+        public Data data = new Data();
         public Nodo raiz;
         public string inorden = "Inorden: ";
         public string preorden = "Preorden: ";
@@ -22,12 +23,33 @@ namespace BlackRedTree
         {
             raiz = null;
             alturaArbol = 0;
+            data.createTable();
         }
 
         // Insercion de datos
         public void Insertar()
         {
             Nodo new_nodo = new Nodo();
+            if (raiz == null)
+            {
+                raiz = new_nodo;
+            }
+            else
+            {
+                raiz.insertar(new_nodo);
+            }
+            alturaArbol = raiz.altura(0, 0);
+            posicion_nodo();
+            bool temp = true;
+            while (temp)
+            {
+                temp = raiz.RotacionRojoNegro();
+            }
+            data.GuardarNodoTemp(new_nodo.clave);
+        }
+        public void Insertar(int clave)
+        {
+            Nodo new_nodo = new Nodo(clave);
             if (raiz == null)
             {
                 raiz = new_nodo;
