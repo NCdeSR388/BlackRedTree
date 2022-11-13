@@ -1,5 +1,1 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/Font.spritefont","C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/bin/Windows/Content/Font.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21535,1.189414
-"C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/LeftLine.png","C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/bin/Windows/Content/LeftLine.xnb","TextureProcessor","Texture2DContent",1567,38501,0.0871323
-"C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/Nodo.png","C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/bin/Windows/Content/Nodo.xnb","TextureProcessor","Texture2DContent",2609,38501,0.013173
-"C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/RigthLine.png","C:/Users/HP PAVILION/source/repos/NCdeSR388/BlackRedTree/BlackRedTree/Content/bin/Windows/Content/RigthLine.xnb","TextureProcessor","Texture2DContent",1763,38501,0.0139201

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace BlackRedTree
 {
@@ -18,7 +19,12 @@ namespace BlackRedTree
         Rectangle rectCursor;
         SpriteFont Font;
         int RPX = 1200, RPY = 800;
-        int delay = 0;
+        bool pressed = false;
+        //buttons Messagebox
+        IEnumerable<string> buttons = new string[1] { "Ok" };
+        IEnumerable<string> buttonsConfirm = new string[2] { "No", "Si" };
+        IEnumerable<string> buttonsYes = new string[1] { "Si" };
+        IEnumerable<string> buttonsNo = new string[1] { "No" };
         //coment
         public Game1()
         {
@@ -41,6 +47,7 @@ namespace BlackRedTree
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             arbol = new Arbol();
+            arbol.data.dropTableTemp();
             TexturasNodo = new Texture2D[3];
             rectBotones = new Rectangle[8];
 
@@ -65,38 +72,81 @@ namespace BlackRedTree
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            KeyboardState State = Keyboard.GetState();
-            Keys[] key = State.GetPressedKeys();
-            delay++;
-            foreach(Keys key2 in key)
-            {
-                if(key2.Equals(Keys.Enter))
-                {
-                    if (delay > 20)
-                    {
-                    arbol.Insertar();
-                        delay = 0;
-                    }
-                    
-                }
-            }
-
             var mouseState = Mouse.GetState();
             var mousePosition = new Point(mouseState.X, mouseState.Y);
             rectCursor = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
-
+            int select = 0;
 
             for (int i = 0; i < rectBotones.Length; i++)
             {
                 if (rectCursor.Intersects(rectBotones[i]))
                 {
-                    if (mouseState.LeftButton == ButtonState.Pressed)
-                    {
-                        posXboton += posXboton;
-                        rectBotones[i] = new Rectangle(posXboton, 40 * i, boton.Width, boton.Height);
-                    }
+                    select = i + 1;
                 }
             }
+            if (mouseState.LeftButton == ButtonState.Released)
+            {
+                pressed = false;
+            }
+            if (mouseState.LeftButton == ButtonState.Pressed && pressed == false)
+            {
+                pressed = true;
+                /*
+                Insertar
+                Guardar
+                Limpiar
+                Cargar
+                Buscar
+                Inorden
+                Preorden
+                Posorden
+                */
+                switch (select)
+                {
+                    case 1:
+                        arbol.Insertar();
+                        break;
+                    case 2:
+                        int[] list = arbol.data.CargarNodosTemp();
+                        if (list != null)
+                        {
+                            arbol.data.dropTable();
+                            foreach (int n in list)
+                            {
+                                arbol.data.GuardarNodo(n);
+                            }
+                            System.Windows.Forms.MessageBox.Show("Arbol guardado correctamente", "Atencion");
+                        }
+                        break;
+                    case 3:
+                        arbol = new Arbol();
+                        arbol.data.dropTableTemp();
+                        System.Windows.Forms.MessageBox.Show("Arbol temporal eliminado", "Atencion");
+                        break;
+                    case 4:
+                        arbol = new Arbol();
+                        arbol.data.dropTableTemp();
+                        arbol.data.CargarNodos(ref arbol);
+                        System.Windows.Forms.MessageBox.Show("Ultimo arbol guardado \n cargado correctamente", "Atencion");
+                        break;
+                    case 5:
+
+                        break;
+                    case 6:
+
+                        break;
+                    case 7:
+
+                        break;
+                    case 8:
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
@@ -106,25 +156,21 @@ namespace BlackRedTree
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(boton, rectBotones[0], Color.White);
+            foreach (Rectangle _rectBotones in rectBotones)
+            {
+                _spriteBatch.Draw(boton, _rectBotones, Color.White);
+            }
             _spriteBatch.DrawString(Font, "Insertar", new Vector2(64, 67), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[1], Color.White);
             _spriteBatch.DrawString(Font, "Guardar Arbol", new Vector2(35, 147), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[2], Color.White);
             _spriteBatch.DrawString(Font, "Limpiar Arbol", new Vector2(40, 227), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[3], Color.White);
             _spriteBatch.DrawString(Font, "Cargar Arbol", new Vector2(44, 307), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[4], Color.White);
             _spriteBatch.DrawString(Font, "Buscar Clave", new Vector2(43, 387), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[5], Color.White);
             _spriteBatch.DrawString(Font, "Inorden", new Vector2(65, 467), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[6], Color.White);
             _spriteBatch.DrawString(Font, "Preorden", new Vector2(58, 547), Color.White);
-            _spriteBatch.Draw(boton, rectBotones[7], Color.White);
             _spriteBatch.DrawString(Font, "Posorden", new Vector2(58, 627), Color.White);
             _spriteBatch.End();
 
-            if(arbol.raiz != null)
+            if (arbol.raiz != null)
             {
                 arbol.dibujar_arbol(gameTime, TexturasNodo, _spriteBatch, Font);
             }
