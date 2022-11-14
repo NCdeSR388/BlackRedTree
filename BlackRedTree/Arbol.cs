@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.VisualBasic;
 using System;
+using System.Windows.Forms;
 
 namespace BlackRedTree
 {
@@ -67,19 +69,35 @@ namespace BlackRedTree
             }
         }
         //METODO BUSCAR TIPO STRING PARA RETORNAR EL RESULTADO EN UN SPRITEFONT
-        public string Buscar(int clave)
+        public void Buscar()
         {
-            if (raiz != null)
+            int clave;
+            object value = Interaction.InputBox("Por favor ingrese el valor a buscar","Buscar", "");
+            try
             {
-                raiz.buscar(clave, raiz);
+                clave = Convert.ToInt32((string)value);
+                if (raiz != null)
+                {
+                    bool result = raiz.buscar(clave);
+                    if (result)
+                    {
+                        MessageBox.Show("Nodo encontrado");
+                    }
+                    else
+                    {
+                        MessageBox.Show("El nodo no ha sido encontrado en el arbol");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error de busqueda: No se ha creado o cargado un arbol rojo/negro");
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Por Favor ingrese un dato valido");
             }
 
-            else
-            {
-                return "Error de busqueda: No se ha creado un arbol rojo/negro";
-            }
-
-            return null;
         }
         public string Inorden(Nodo n)
         {

@@ -107,3 +107,4 @@ C:\Users\Shinespark\source\repos\NCdeSR388\BlackRedTree\BlackRedTree\bin\Debug\n
 C:\Users\Shinespark\source\repos\NCdeSR388\BlackRedTree\BlackRedTree\bin\Debug\net6.0-windows\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\Shinespark\source\repos\NCdeSR388\BlackRedTree\BlackRedTree\bin\Debug\net6.0-windows\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\Shinespark\source\repos\NCdeSR388\BlackRedTree\BlackRedTree\obj\Debug\net6.0-windows\BlackRedTree.csproj.AssemblyReference.cache
+C:\Users\Shinespark\source\repos\NCdeSR388\BlackRedTree\BlackRedTree\bin\Debug\net6.0-windows\Content\input.xnb

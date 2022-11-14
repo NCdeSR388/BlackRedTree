@@ -15,16 +15,11 @@ namespace BlackRedTree
         Texture2D[] TexturasNodo;
         Texture2D boton;
         Rectangle[] rectBotones;
-        int posXboton = 50;
-        Rectangle rectCursor;
         SpriteFont Font;
         int RPX = 1200, RPY = 800;
+        //input
+        Rectangle rectCursor;
         bool pressed = false;
-        //buttons Messagebox
-        IEnumerable<string> buttons = new string[1] { "Ok" };
-        IEnumerable<string> buttonsConfirm = new string[2] { "No", "Si" };
-        IEnumerable<string> buttonsYes = new string[1] { "Si" };
-        IEnumerable<string> buttonsNo = new string[1] { "No" };
         //coment
         public Game1()
         {
@@ -56,7 +51,6 @@ namespace BlackRedTree
             TexturasNodo[1] = Content.Load<Texture2D>("LeftLine");
             TexturasNodo[2] = Content.Load<Texture2D>("RigthLine");
             Font = Content.Load<SpriteFont>("Font");
-
             rectBotones[0] = new Rectangle(20, 40, boton.Width, boton.Height);
             rectBotones[1] = new Rectangle(20, 120, boton.Width, boton.Height);
             rectBotones[2] = new Rectangle(20, 200, boton.Width, boton.Height);
@@ -130,18 +124,17 @@ namespace BlackRedTree
                         System.Windows.Forms.MessageBox.Show("Ultimo arbol guardado \n cargado correctamente", "Atencion");
                         break;
                     case 5:
-
+                        arbol.Buscar();
                         break;
                     case 6:
-
+                        System.Windows.Forms.MessageBox.Show(arbol.Inorden(arbol.raiz), "Recorrido Innorden") ;
                         break;
                     case 7:
-
+                        System.Windows.Forms.MessageBox.Show(arbol.Preorden(arbol.raiz), "Recorrido Preorden");
                         break;
                     case 8:
-
+                        System.Windows.Forms.MessageBox.Show(arbol.Posorden(arbol.raiz), "Recorrido Posorden");
                         break;
-
                     default:
                         break;
                 }
@@ -154,7 +147,10 @@ namespace BlackRedTree
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            if (arbol.raiz != null)
+            {
+                arbol.dibujar_arbol(gameTime, TexturasNodo, _spriteBatch, Font);
+            }
             _spriteBatch.Begin();
             foreach (Rectangle _rectBotones in rectBotones)
             {
@@ -169,11 +165,6 @@ namespace BlackRedTree
             _spriteBatch.DrawString(Font, "Preorden", new Vector2(58, 547), Color.White);
             _spriteBatch.DrawString(Font, "Posorden", new Vector2(58, 627), Color.White);
             _spriteBatch.End();
-
-            if (arbol.raiz != null)
-            {
-                arbol.dibujar_arbol(gameTime, TexturasNodo, _spriteBatch, Font);
-            }
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

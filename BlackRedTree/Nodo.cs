@@ -20,6 +20,8 @@ namespace BlackRedTree
         public int FacrorEquilibrio;
         public int alturaNodo;
         private double compenzacion = 1.2;
+        private bool intermitencia = false;
+        private int timeIntermit = 0;
         //Variables para ordenamiento del nodo
 
         public Nodo()
@@ -73,37 +75,29 @@ namespace BlackRedTree
             }
         }
         //METODO BUSCAR TIPO STRING PARA RETORNAR EL RESULTADO EN UN SPRITEFONT
-        public string buscar(int clave, Nodo n)
+        public bool buscar(int clave)
         {
-            if (n != null)
+            bool result = false;
+            if (this.clave == clave)
             {
-                if (clave == n.clave)
-                {
-                    //ESTO RETORNARA LAS COORDENADAS DEL NODO
-                    return null;
-                }
-                else
-                {
-                    if (clave < n.clave)
-                    {
-                        buscar(clave, n.izquierdo);
-                    }
-                    else
-                    {
-                        if (clave > n.clave)
-                        {
-                            buscar(clave, n.derecho);
-                        }
-                    }
-                }
-            }
+                //Retorna un positivo a la busqueda
+                intermitencia = true;
+                return true;
 
+            }
             else
             {
-                return "Error de busqueda: El nodo que busca no se encuentra en el arbol";
-            }
+                if (izquierdo != null)
+                {
+                    result = izquierdo.buscar(clave);
+                }
+                if (derecho != null && !result)
+                {
+                    result = derecho.buscar(clave);
+                }
 
-            return null;
+            }
+            return result;
         }
         public int AlturaIzquierda()
         {
@@ -160,7 +154,22 @@ namespace BlackRedTree
             //Dibujo de el cuerpo de nodo y clave
             _spriteBatch.Begin();
             Rectangle rect_nodo = new Rectangle(nodoX, nodoY, diameter, diameter);
-            _spriteBatch.Draw(Textures[0], rect_nodo, color);
+            if (intermitencia)
+            {
+                timeIntermit++;
+            }
+            if(timeIntermit > 40)
+            {
+                _spriteBatch.Draw(Textures[0], rect_nodo, Color.Yellow);
+            }
+            else
+            {
+                _spriteBatch.Draw(Textures[0], rect_nodo, color);
+            }
+            if(timeIntermit > 80)
+            {
+                timeIntermit = 0;
+            }
             Vector2 VectorClave = new Vector2(nodoX + (diameter / 4), nodoY + (diameter / 3));
             _spriteBatch.DrawString(Font, clave.ToString(), VectorClave, Color.Black);
             _spriteBatch.End();
