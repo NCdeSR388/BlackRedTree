@@ -12,14 +12,14 @@ namespace BlackRedTree
         private SpriteBatch _spriteBatch;
         //instancias
         Arbol arbol;//instancia de arbol
-        Texture2D[] TexturasNodo;
-        Texture2D boton;
-        Rectangle[] rectBotones;
-        SpriteFont Font;
-        int RPX = 1200, RPY = 800;
-        //input
-        Rectangle rectCursor;
-        bool pressed = false;
+        Texture2D[] TexturasNodo;//Variable de las texturas de nonos y elaces
+        Texture2D boton;//Textura de los botones
+        Rectangle[] rectBotones;//Rectangulos para dibujo de botones
+        SpriteFont Font;//Spritefont para textos y numeros de claves
+        int RPX = 1200, RPY = 800;//Tamalo de la pantalla preferido
+        //Entradas para interaccion con botones
+        Rectangle rectCursor;//Rectangulo auto posicionado en las coordenadas del puntero
+        bool pressed = false;//Bool para guardar estado de el mouse
         //coment
         public Game1()
         {
@@ -42,15 +42,17 @@ namespace BlackRedTree
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             arbol = new Arbol();
+            //Se borra la tabla temporal
             arbol.data.dropTableTemp();
             TexturasNodo = new Texture2D[3];
             rectBotones = new Rectangle[8];
-
+            //Carga de texturas de nodo, enlaces y el spritefont
             boton = Content.Load<Texture2D>("Boton");
             TexturasNodo[0] = Content.Load<Texture2D>("Nodo");
             TexturasNodo[1] = Content.Load<Texture2D>("LeftLine");
             TexturasNodo[2] = Content.Load<Texture2D>("RigthLine");
             Font = Content.Load<SpriteFont>("Font");
+            //Declaracion de rectangulos de los botones en pantalla
             rectBotones[0] = new Rectangle(20, 40, boton.Width, boton.Height);
             rectBotones[1] = new Rectangle(20, 120, boton.Width, boton.Height);
             rectBotones[2] = new Rectangle(20, 200, boton.Width, boton.Height);
@@ -66,22 +68,31 @@ namespace BlackRedTree
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            //Instancia para obtener estado de el mouse
             var mouseState = Mouse.GetState();
             var mousePosition = new Point(mouseState.X, mouseState.Y);
-            rectCursor = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
+            rectCursor = new Rectangle(mouseState.X, mouseState.Y, 1, 1);//Se asigna la posicion al rectangulo del puntero
             int select = 0;
-
+            //Se verifica si se intersecta el rectangulo del puntero y un boton
             for (int i = 0; i < rectBotones.Length; i++)
             {
                 if (rectCursor.Intersects(rectBotones[i]))
                 {
+                    //Si se intersecta se guarda el valor de el boton intersectado(Empezando por 1)
                     select = i + 1;
                 }
             }
+            //Se verifica si el boton izquierdo del mouse no esta presionado
             if (mouseState.LeftButton == ButtonState.Released)
             {
+                //Se actualiza la variable de estado
                 pressed = false;
             }
+            /*Se verifica si se esta presionando el boton izquierdo del mouse 
+             * y ADEMAS si no estaba presionado desde el frame anterior
+            Esto nos ayuda a evitar que las operaciones a continuacion se realicen mas de una vez 
+            por cada seleccion de el usuario
+             */
             if (mouseState.LeftButton == ButtonState.Pressed && pressed == false)
             {
                 pressed = true;
@@ -95,6 +106,8 @@ namespace BlackRedTree
                 Preorden
                 Posorden
                 */
+                /*A continuacion se realizan las operaciones logicas necesarias antes de llamar
+                 a cada funcion elaborada respectivamente en la Instancia de la Clase nodo y Arbol*/
                 switch (select)
                 {
                     case 1:
@@ -147,15 +160,19 @@ namespace BlackRedTree
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            //En este apartado solamente llamamos a la funcion dibujar arbol la cual debe llamarse en tiempo real
+            //A dicha funcion se le pasa el _spritebatch para dibujar los objetos dentro de ella
             if (arbol.raiz != null)
             {
-                arbol.dibujar_arbol(gameTime, TexturasNodo, _spriteBatch, Font);
+                arbol.dibujar_arbol(TexturasNodo, _spriteBatch, Font);
             }
             _spriteBatch.Begin();
+            //Se dibujan los botones
             foreach (Rectangle _rectBotones in rectBotones)
             {
                 _spriteBatch.Draw(boton, _rectBotones, Color.White);
             }
+            //Luego se dibujan los strings de los botones
             _spriteBatch.DrawString(Font, "Insertar", new Vector2(64, 67), Color.White);
             _spriteBatch.DrawString(Font, "Guardar Arbol", new Vector2(35, 147), Color.White);
             _spriteBatch.DrawString(Font, "Limpiar Arbol", new Vector2(40, 227), Color.White);

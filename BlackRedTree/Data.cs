@@ -6,17 +6,20 @@ using System.Windows.Forms;
 
 namespace BlackRedTree
 {
+    //Clase orientada a procesos SQLite
     public class Data
     {
-        static string url = Application.StartupPath + "database.db";
-        SqliteConnection conection;
+        static string url = Application.StartupPath + "database.db";//Nombre de la bd
+        SqliteConnection conection;//Objeto Coneccion sqlite
         public Data()
         {
+            //Instanciacion de la clase
             createDB();
             conection = new SqliteConnection("Data Source=" + url);
         }
         private void createDB()
         {
+            //Se crea la bd en caso de no haber sido creada
             if (!File.Exists(url))
             {
                 var file = File.Create(url);
@@ -25,11 +28,13 @@ namespace BlackRedTree
         }
         private void Conectar()
         {
+            //Apretura de coneccion para querys
             if (conection.State == ConnectionState.Closed)
             {
                 conection.Open();
             }
         }
+        //Funcion para crear tabla principal si no esta creada
         public void createTable()
         {
             Conectar();
@@ -41,6 +46,7 @@ namespace BlackRedTree
             comando.ExecuteNonQuery();
             conection.Close();
         }
+        //Funcion para limpiar tabla principal
         public void dropTable()
         {
             Conectar();
@@ -49,10 +55,12 @@ namespace BlackRedTree
                 "(idNodo INTEGER," +
                 "clave int NOT NULL," +
                 "PRIMARY KEY(idNodo));";
+            //Creamos el comando con la coneccion y el string de la consulta
             SqliteCommand comando = new SqliteCommand(Query, conection);
-            comando.ExecuteNonQuery();
+            comando.ExecuteNonQuery();//Ejecutamos la consulta
             conection.Close();
         }
+        //Borado de tabla temporal
         public void dropTableTemp()
         {
             Conectar();
@@ -65,6 +73,7 @@ namespace BlackRedTree
             comando.ExecuteNonQuery();
             conection.Close();
         }
+        //Guardado de clave de nodo en tabla principal
         public void GuardarNodo(int clave)
         {
             string Query = "INSERT INTO Nodo(clave) VALUES (@clave);";
@@ -75,6 +84,7 @@ namespace BlackRedTree
             conection.Close();
 
         }
+        //Guardado de nodo en tabla de arbol temporal
         public void GuardarNodoTemp(int clave)
         {
             Conectar();
@@ -85,7 +95,8 @@ namespace BlackRedTree
             conection.Close();
 
         }
-        public void CargarNodos(ref Arbol arbol)
+        //Funcion para cargar nodos de ultimo arbol guardado
+        public void CargarNodos(ref Arbol arbol)//Se obtiene un objeto arbol por referencia
         {
             Conectar();
             string Query = "SELECT clave FROM Nodo";
@@ -95,6 +106,7 @@ namespace BlackRedTree
             {
                 while (Nodos.Read())
                 {
+                    //Insersion continua en el objeto arbol obtenido por referencia
                     arbol.Insertar(Convert.ToInt32(Nodos.GetValue(0).ToString()));
                 }
             }
@@ -103,6 +115,7 @@ namespace BlackRedTree
                 MessageBox.Show("Sin Arboles guardados");
             }
         }
+        //Cargamos los nodos de la tabla temporal y los usamos para retornar una lista de claves
         public int[] CargarNodosTemp()
         {
             Conectar();

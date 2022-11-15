@@ -8,34 +8,35 @@ namespace BlackRedTree
 
     public class Nodo
     {
-        Random rand = new Random();
-        public int clave;
-        public Nodo izquierdo;
-        public Nodo derecho;
-        public Color color;
+        Random rand = new Random();//Objeto para generar el numero aleatorio
+        public int clave;//Clave de el nodo
+        public Nodo izquierdo;//Nodo hijo izquierdo
+        public Nodo derecho;//Nodo hijo derecho
+        public Color color;//Color actual por default de el nodo
 
         //Variables para caracteristicas graficas del nodo
-        public int nodoX, nodoY, diameter;
-        public int nivel;
-        public int FacrorEquilibrio;
-        public int alturaNodo;
-        private double compenzacion = 1.2;
-        private bool intermitencia = false;
-        private int timeIntermit = 0;
+        public int nodoX, nodoY, diameter;//Posicion y tamaño de el nodo
+        public int alturaNodo;//Altura de el presente nodo
+        private double compenzacion = 1.2;//Compenzacion de distancia en x de su padre para el dibujo del nodo
+        private bool intermitencia = false;//Variable para activar o desactivar intermitencia al buscar
+        private int timeIntermit = 0;//Contador para cambiio de color de intermitencia
         //Variables para ordenamiento del nodo
 
+        //Instancia de insercion normal
         public Nodo()
         {
             this.clave = rand.Next(1000);
             color = Color.DarkRed;
 
         }
+        //Instancia de insercion en un caso de que ya exista con anticipacion o este siendo cargado el nodo
         public Nodo(int clave)
         {
             this.clave = clave;
             color = Color.DarkRed;
 
         }
+        //Instancia de insercion en caso de ser necesario el insertar un nodo con su color(Ordenamientos)
         public Nodo(int clave, Color color)
         {
             this.clave = clave;
@@ -43,6 +44,7 @@ namespace BlackRedTree
 
         }
 
+        //Insersion de nodos recursivamente
         public bool insertar(Nodo new_nodo)
         {
             if (new_nodo.clave > clave)
@@ -74,7 +76,7 @@ namespace BlackRedTree
                 return false;
             }
         }
-        //METODO BUSCAR TIPO STRING PARA RETORNAR EL RESULTADO EN UN SPRITEFONT
+        //METODO BUSCAR TIPO BOOL PARA RETORNAR EL RESULTADO COMO UN POSITIVO O FALSO
         public bool buscar(int clave)
         {
             bool result = false;
@@ -87,6 +89,7 @@ namespace BlackRedTree
             }
             else
             {
+                //Sigue buscando
                 if (izquierdo != null)
                 {
                     result = izquierdo.buscar(clave);
@@ -99,6 +102,7 @@ namespace BlackRedTree
             }
             return result;
         }
+        //Numero de nodos a la izquierda de el nodo(Usado para distancia en x de nodo derecho)
         public int AlturaIzquierda()
         {
             int contador = 1;
@@ -108,6 +112,7 @@ namespace BlackRedTree
             }
             return contador;
         }
+        //Numero de nodos a la derecha de el nodo(Usado para distancia en x de nodo izquierdo)
         public int AlturaDerecha()
         {
             int contador = 1;
@@ -117,6 +122,7 @@ namespace BlackRedTree
             }
             return contador;
         }
+        //Funcion para asignar la posicion en x y Y de el presente nodo para su posterior dibujado
         public void XY_position(int _X_nodo, int _Y_nodo, int distanceY, int distanceX, int _diameter)
         {
             nodoX = _X_nodo;
@@ -132,7 +138,8 @@ namespace BlackRedTree
             }
 
         }
-        public void Draw_nodo(GameTime gameTime, Texture2D[] Textures, SpriteBatch _spriteBatch, SpriteFont Font, int distanceX, int distanceY)
+        //Funcion para dibujar con spritebatch recursivamente
+        public void Draw_nodo(Texture2D[] Textures, SpriteBatch _spriteBatch, SpriteFont Font, int distanceX, int distanceY)
         {
             //Dibujo de los enlaces entre los nodos
             if (derecho != null)
@@ -141,7 +148,7 @@ namespace BlackRedTree
                 Rectangle rectLine = new Rectangle(nodoX + (diameter / 2), nodoY + (diameter / 2), Convert.ToInt32(distanceX * derecho.AlturaIzquierda() * compenzacion), distanceY);
                 _spriteBatch.Draw(Textures[2], rectLine, Color.Gray);
                 _spriteBatch.End();
-                derecho.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY);
+                derecho.Draw_nodo(Textures, _spriteBatch, Font, distanceX, distanceY);
             }
             if (izquierdo != null)
             {
@@ -149,16 +156,17 @@ namespace BlackRedTree
                 Rectangle rectLine = new Rectangle(Convert.ToInt32(nodoX + (diameter / 2) - (distanceX * izquierdo.AlturaDerecha() * compenzacion)), nodoY + (diameter / 2), Convert.ToInt32(distanceX * izquierdo.AlturaDerecha() * compenzacion), distanceY);
                 _spriteBatch.Draw(Textures[1], rectLine, Color.Gray);
                 _spriteBatch.End();
-                izquierdo.Draw_nodo(gameTime, Textures, _spriteBatch, Font, distanceX, distanceY);
+                izquierdo.Draw_nodo(Textures, _spriteBatch, Font, distanceX, distanceY);
             }
             //Dibujo de el cuerpo de nodo y clave
             _spriteBatch.Begin();
             Rectangle rect_nodo = new Rectangle(nodoX, nodoY, diameter, diameter);
+            //Ademas reviso si el nodo actual es resultado de una busqueda y lo dibujo de forma intermitente
             if (intermitencia)
             {
                 timeIntermit++;
             }
-            if(timeIntermit > 40)
+            if (timeIntermit > 40)
             {
                 _spriteBatch.Draw(Textures[0], rect_nodo, Color.Yellow);
             }
@@ -166,7 +174,7 @@ namespace BlackRedTree
             {
                 _spriteBatch.Draw(Textures[0], rect_nodo, color);
             }
-            if(timeIntermit > 80)
+            if (timeIntermit > 80)
             {
                 timeIntermit = 0;
             }
@@ -174,6 +182,7 @@ namespace BlackRedTree
             _spriteBatch.DrawString(Font, clave.ToString(), VectorClave, Color.Black);
             _spriteBatch.End();
         }
+        //Revisamos la altura total de el arbol
         public int altura(int altura_actual, int MayorNivel)
         {
             altura_actual++;
@@ -192,9 +201,10 @@ namespace BlackRedTree
             }
             return MayorNivel;
         }
+        //Rotaciones segun propiedades de arboles Rojo/Negro
         public bool RotacionRojoNegro()
         {
-
+            //En rotaciones de izquierda
             if (izquierdo != null)
             {
                 if (izquierdo.color == Color.DarkRed)
@@ -263,10 +273,9 @@ namespace BlackRedTree
                             }
                         }
                     }
-
-
                 }
             }
+            //En rotaciones de derecha
             if (derecho != null)
             {
                 if (derecho.color == Color.DarkRed)
@@ -344,6 +353,7 @@ namespace BlackRedTree
             //Caso por default
             if (alturaNodo == 1)
             {
+                //Para cumplir con la propiedad de el nodo raiz asignamos siempre el color del nodo si este es de altura 1
                 color = Color.Gray;
             }
             //Practicamos recursividad y retornamos resultados
